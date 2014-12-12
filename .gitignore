@@ -1,6 +1,19 @@
+*.bak
+*.swp
+*.tmp
+*~
+
 *.s#?
 *.b#?
 *.l#?
 
 eagle.epf
+
+*.elf
+*.hex
+*.list
+*.map
+*.o
+
+tags
 
