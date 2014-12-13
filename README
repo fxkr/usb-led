@@ -1,0 +1,33 @@
+USB-RGB-LED
+===========
+
+A very simple + cheap + tiny USB-controllable RGB-LED.
+
+Author: Felix Kaiser <felix.kaiser@fxkr.net>
+License: GPLv2/GPLv3 (your choice)
+
+Components:
+
+- Board
+- Firmware
+- Linux tool
+
+We use USB VID/PID f0ss:49d9 (screw you, USB-IF).
+
+
+Thanks
+------
+
+This project is based on:
+
+- Objective Developments V-USB (GPLv2/v3)
+  http://www.obdev.at/products/vusb
+- Micronucleus' RC Oscillator calibration routine (GPLv2/v3)
+  https://github.com/micronucleus/micronucleus/blob/master/firmware/osccalASM.S
+- libusb (LGPLv2.1 or later)
+  http://libusb.info/
+- docopt.c (MIT)
+  https://github.com/docopt/docopt.c
+- SparkFuns Eagle Libraries (CC BY-SA 3.0)
+  https://github.com/sparkfun/SparkFun-Eagle-Libraries
+
