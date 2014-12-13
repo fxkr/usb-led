@@ -37,6 +37,12 @@ void set_status_led(bool on_off)
 // usbFunctionSetup handles USB Control Transfers.
 extern usbMsgLen_t usbFunctionSetup(uchar setupData[8])
 {
+  // Verify checksum. V-USB doesn't do it.
+  // (Yes, this out-of-bounds access is ok.)
+  if (usbCrc16(setupData, 8 + 2) != 0x4FFE) {
+    return 0;  // CRC error; ignore packet
+  }
+
   usbRequest_t *rq = (void *)setupData;
 
   switch(rq->bRequest){
