@@ -16,6 +16,14 @@
 #define STATUS_LED_DDR_MASK (1 << STATUS_LED_PIN)
 
 
+typedef struct {
+  uint8_t red, green, blue;
+  bool status;
+} state_t;
+
+state_t global_state;
+
+
 /* Turn the green status LED on/off. */
 void set_status_led(bool on_off)
 {
@@ -35,22 +43,29 @@ extern usbMsgLen_t usbFunctionSetup(uchar setupData[8])
 
     // Turn everything off
     case 0:
-      set_status_led(true);
-      ws2812b_set_rgb(0,0,0);
-      return 0;
+      global_state.red = 0;
+      global_state.green = 0;
+      global_state.blue = 0;
+      global_state.status = false;
+      // fall-through
 
-    // Set status LED
+    // Make updates take effect
     case 1:
-      if (rq->wLength.word == 1) {
-        set_status_led(rq->wValue.word == 0);
-      }
-      return 0;
+      set_status_led(global_state.status);
+      ws2812b_set_rgb(global_state.red, global_state.green, global_state.blue);
 
-    // Set RGB LED
+    // Update channel values
     case 2:
-      if (rq->wLength.word == 3) {
-        ws2812b_set_rgb(rq->wValue.bytes[0], rq->wValue.bytes[0], rq->wValue.bytes[0]);
-      }
+      global_state.status = (0 != rq->wValue.word);
+      return 0;
+    case 3:
+      global_state.red = rq->wValue.word & 0xff;
+      return 0;
+    case 4:
+      global_state.green = rq->wValue.word & 0xff;
+      return 0;
+    case 5:
+      global_state.blue = rq->wValue.word & 0xff;
       return 0;
 
     // Ignore unknown requests
