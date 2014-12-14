@@ -102,7 +102,11 @@ int main(void) {
 
   // Blink small led as boot indication
   set_status_led(true);
-  _delay_ms(10);
+  _delay_ms(33);
+  set_status_led(false);
+  _delay_ms(33);
+  set_status_led(true);
+  _delay_ms(33);
   set_status_led(false);
 
   timer_init();
