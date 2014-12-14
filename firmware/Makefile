@@ -1,5 +1,5 @@
 PRG            = main
-OBJ            = usbdrv/usbdrv.o usbdrv/usbdrvasm.o usbdrv/oddebug.o osccal.o ws2812b.o main.o
+OBJ            = usbdrv/usbdrv.o usbdrv/usbdrvasm.o usbdrv/oddebug.o osccal.o ws2812b.o timer.o main.o
 MCU_TARGET     = attiny85
 OPTIMIZE       = -O2
 

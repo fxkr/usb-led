@@ -8,6 +8,7 @@
 
 #include "osccal.h"
 #include "ws2812b.h"
+#include "timer.h"
 
 
 #define STATUS_LED_PIN      PB4
@@ -104,18 +105,27 @@ int main(void) {
   _delay_ms(10);
   set_status_led(false);
 
-  // Initialize USB
-  usbInit();
+  timer_init();
 
-  // Reenumerate
+  // Initialize USB and reenumerate
+  usbInit();
   usbDeviceDisconnect();
   _delay_ms(250);
   usbDeviceConnect();
-  sei();
+  sei(); // Enable interrupts. By now, all other initialization should be done.
   usbPoll();
 
   while (1) {
     usbPoll();
+
+    time_val_t now = timer_get();
+    if (now.updated) {
+      if (now.time % 1000 == 0) {
+        set_status_led(true);
+      } else if (now.time % 1000== 10) {
+        set_status_led(false);
+      }
+    }
   }
 
   return 0;
