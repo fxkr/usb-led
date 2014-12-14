@@ -91,8 +91,8 @@ int main(void) {
 
   // Set clock prescaler to 1 (so we'll run at 16 MHz; we'll switch to 16.5 MHz later).
   // Not actually necessary if the CKDIV8 fuse is programmed.
-  CLKPR = 1<<CLKPCE;
-  CLKPR = 0;
+  CLKPR = 1<<CLKPCE;  // enable change
+  CLKPR = 0;  // set factor to 1
 
   // Configure indicator LED pin
   STATUS_LED_DDR |= STATUS_LED_DDR_MASK;
