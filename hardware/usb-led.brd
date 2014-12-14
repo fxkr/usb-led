@@ -1608,9 +1608,9 @@ Please make sure your boards conform to these design rules.</description>
 <attribute name="VALUE" x="33.655" y="13.081" size="0.4064" layer="28" rot="MR180"/>
 <attribute name="NAME" x="34.163" y="11.938" size="0.6096" layer="26" font="vector" rot="MR180"/>
 </element>
-<element name="R1" library="SparkFun-Resistors" package="0603-RES" value="68R" x="29.972" y="13.843" smashed="yes" rot="R180">
-<attribute name="NAME" x="29.972" y="14.351" size="0.6096" layer="25" font="vector" rot="R180" align="top-center"/>
-<attribute name="VALUE" x="30.5435" y="13.335" size="0.4064" layer="27" rot="R180"/>
+<element name="R1" library="SparkFun-Resistors" package="0603-RES" value="68R" x="29.972" y="14.097" smashed="yes" rot="R180">
+<attribute name="NAME" x="29.972" y="14.605" size="0.6096" layer="25" font="vector" rot="R180" align="top-center"/>
+<attribute name="VALUE" x="30.5435" y="13.589" size="0.4064" layer="27" rot="R180"/>
 </element>
 <element name="R2" library="SparkFun-Resistors" package="0603-RES" value="68R" x="29.972" y="10.541" smashed="yes" rot="R180">
 <attribute name="NAME" x="29.972" y="10.033" size="0.6096" layer="25" font="vector" rot="R180" align="bottom-center"/>
@@ -1620,7 +1620,7 @@ Please make sure your boards conform to these design rules.</description>
 <attribute name="NAME" x="29.6291" y="8.509" size="0.6096" layer="25" font="vector" rot="R270" align="bottom-center"/>
 <attribute name="VALUE" x="28.067" y="8.5725" size="0.4064" layer="27" rot="R270"/>
 </element>
-<element name="C2" library="SparkFun-Passives" package="0805" value="" x="30.607" y="10.16" smashed="yes" rot="MR0">
+<element name="C2" library="SparkFun-Passives" package="0805" value="100nF" x="30.607" y="10.16" smashed="yes" rot="MR0">
 <attribute name="NAME" x="30.607" y="9.2075" size="0.6096" layer="26" font="vector" rot="MR0" align="top-center"/>
 <attribute name="VALUE" x="31.623" y="8.763" size="0.4064" layer="28" rot="MR0"/>
 </element>
@@ -1641,13 +1641,13 @@ Please make sure your boards conform to these design rules.</description>
 <attribute name="NAME" x="34.925" y="15.24" size="0.6096" layer="25" font="vector" rot="R180" align="top-center"/>
 <attribute name="VALUE" x="36.525" y="15.684" size="0.6096" layer="27" rot="R90"/>
 </element>
-<element name="D2" library="z-diode-0603" package="ZD0603" value="3V6" x="29.972" y="12.192" smashed="yes" rot="R180">
-<attribute name="NAME" x="29.972" y="11.684" size="0.6096" layer="25" font="vector" rot="R180" align="bottom-center"/>
-<attribute name="VALUE" x="30.988" y="13.335" size="0.4064" layer="27" font="vector" rot="R180"/>
+<element name="D2" library="z-diode-0603" package="ZD0603" value="3V6" x="29.972" y="12.319" smashed="yes" rot="R180">
+<attribute name="NAME" x="29.972" y="11.811" size="0.6096" layer="25" font="vector" rot="R180" align="bottom-center"/>
+<attribute name="VALUE" x="30.988" y="13.462" size="0.4064" layer="27" font="vector" rot="R180"/>
 </element>
-<element name="D1" library="z-diode-0603" package="ZD0603" value="3V6" x="29.972" y="15.494" smashed="yes" rot="R180">
-<attribute name="NAME" x="29.972" y="16.002" size="0.6096" layer="25" font="vector" rot="R180" align="top-center"/>
-<attribute name="VALUE" x="30.988" y="16.637" size="0.4064" layer="27" font="vector" rot="R180"/>
+<element name="D1" library="z-diode-0603" package="ZD0603" value="3V6" x="29.972" y="15.875" smashed="yes" rot="R180">
+<attribute name="NAME" x="29.972" y="16.383" size="0.6096" layer="25" font="vector" rot="R180" align="top-center"/>
+<attribute name="VALUE" x="30.988" y="17.018" size="0.4064" layer="27" font="vector" rot="R180"/>
 </element>
 <element name="C1" library="rcl" package="C0805" value="10uF" x="29.337" y="12.827" smashed="yes" rot="MR90">
 <attribute name="NAME" x="29.337" y="14.732" size="0.6096" layer="26" font="vector" rot="MR90" align="center-left"/>
@@ -1718,10 +1718,10 @@ Please make sure your boards conform to these design rules.</description>
 <contactref element="D2" pad="K"/>
 <wire x1="29.122" y1="10.541" x2="27.308" y2="10.541" width="0.254" layer="1"/>
 <wire x1="27.308" y1="10.541" x2="27.292" y2="10.557" width="0.254" layer="1"/>
-<wire x1="29.122" y1="10.541" x2="29.122" y2="12.192" width="0.254" layer="1"/>
 <wire x1="28.956" y1="10.502" x2="29.122" y2="10.541" width="0.254" layer="1"/>
 <wire x1="28.956" y1="10.502" x2="28.956" y2="8.978" width="0.254" layer="1"/>
 <wire x1="28.956" y1="8.978" x2="29.083" y2="8.851" width="0.254" layer="1"/>
+<wire x1="29.122" y1="10.541" x2="29.122" y2="12.319" width="0.254" layer="1"/>
 </signal>
 <signal name="D-">
 <contactref element="R2" pad="1"/>
@@ -1730,17 +1730,18 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="36.83" y1="10.795" x2="36.83" y2="8.3312" width="0.254" layer="16"/>
 <wire x1="32.512" y1="11.43" x2="36.195" y2="11.43" width="0.254" layer="1"/>
 <wire x1="36.195" y1="11.43" x2="36.83" y2="10.795" width="0.254" layer="1"/>
-<wire x1="30.822" y1="10.541" x2="31.623" y2="10.541" width="0.254" layer="1"/>
 <wire x1="31.623" y1="10.541" x2="32.512" y2="11.43" width="0.254" layer="1"/>
+<wire x1="31.623" y1="10.541" x2="30.822" y2="10.541" width="0.254" layer="1"/>
 </signal>
 <signal name="D+">
 <contactref element="R1" pad="1"/>
 <contactref element="IC1" pad="7"/>
 <via x="32.766" y="12.7" extent="1-16" drill="0.6"/>
-<wire x1="32.766" y1="12.7" x2="31.623" y2="13.843" width="0.254" layer="1"/>
 <wire x1="32.766" y1="12.7" x2="34.29" y2="11.176" width="0.254" layer="16"/>
 <wire x1="34.29" y1="11.176" x2="34.29" y2="8.3312" width="0.254" layer="16"/>
-<wire x1="31.623" y1="13.843" x2="30.822" y2="13.843" width="0.254" layer="1"/>
+<wire x1="32.766" y1="12.7" x2="31.5468" y2="13.9192" width="0.254" layer="1"/>
+<wire x1="31.5468" y1="13.9192" x2="30.9998" y2="13.9192" width="0.254" layer="1"/>
+<wire x1="30.9998" y1="13.9192" x2="30.822" y2="14.097" width="0.254" layer="1"/>
 </signal>
 <signal name="C10">
 <contactref element="R5" pad="2"/>
@@ -1753,10 +1754,10 @@ Please make sure your boards conform to these design rules.</description>
 <contactref element="USB" pad="D+"/>
 <contactref element="R1" pad="2"/>
 <contactref element="D1" pad="K"/>
-<wire x1="29.122" y1="13.843" x2="29.122" y2="15.494" width="0.254" layer="1"/>
-<wire x1="29.122" y1="13.843" x2="28.067" y2="13.843" width="0.254" layer="1"/>
-<wire x1="28.067" y1="13.843" x2="27.292" y2="13.068" width="0.254" layer="1"/>
+<wire x1="29.122" y1="14.097" x2="29.122" y2="15.875" width="0.254" layer="1"/>
+<wire x1="28.321" y1="14.097" x2="27.292" y2="13.068" width="0.254" layer="1"/>
 <wire x1="27.292" y1="13.068" x2="27.292" y2="12.811" width="0.254" layer="1"/>
+<wire x1="28.321" y1="14.097" x2="29.122" y2="14.097" width="0.254" layer="1"/>
 </signal>
 <signal name="DIN">
 <contactref element="IC1" pad="2"/>
