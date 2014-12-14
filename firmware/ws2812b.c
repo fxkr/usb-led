@@ -26,7 +26,7 @@ static inline void ws2812b_send_byte(uint8_t byte, uint8_t hiMask, uint8_t loMas
   #error('requires 16.5 MHz clock period')
   #endif
 
-  asm volatile(
+  __asm volatile(
     "       ldi  %[bitNum],8   \n\t"  // For 8 bits
     "next_bit%=:               \n\t"  // Begin
     "       out  %[port],%[hi] \n\t"  //   Rising Flank

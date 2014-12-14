@@ -7,7 +7,7 @@ DEFS           = -DF_CPU=16500000UL
 
 CC             = avr-gcc
 
-CFLAGS        = -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) -Iusbdrv -I. $(DEFS)
+CFLAGS        = -std=c99 -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) -Iusbdrv -I. $(DEFS)
 LDFLAGS       = -Wl,-Map,$(PRG).map
 
 OBJCOPY        = avr-objcopy
