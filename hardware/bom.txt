@@ -1,0 +1,12 @@
+Part     Value    Package     Digikey      Qty  Price
+IC1      Attiny8  8-SOIC      ATTINY85-20   1   1,36 €
+C1       10uF     SMD 0805    1276-1119-1   1   0,17 €
+C2       100nF    SMD 0603    399-1096-1-   1   0,09 €
+D1, D2   ZD 3V6   SMD 0603    MM3Z3V6T1GO   2   0,13 €
+R1, R2   68R      SMD 0603    P68GCT-ND     2   0,09 €
+R3       1k5      SMD 0603    MCT0603-1.5   1   0,07 €
+R4       470R     SMD 0603    MCT0603-470   1   0,07 €
+R5       10K      SMD 0603    MCT0603-10.   1   0,07 €
+USB               USB A Male  1175-1008-N   1   0,62 €
+WS2812B  WS2812B  5050                      1   0,18 €
+
