@@ -178,11 +178,18 @@ int main(int argc, char** argv)
     if (!perform_control_transfer(hDev, 1, 0, 0)) return 1;  // Commit
     return 0;
 
+  } else if (argc == 3 && 0 == strcmp("status", argv[1]) && 0 == strcmp("blink", argv[2])) {
+    libusb_device_handle *hDev = open_device();
+    if (hDev == NULL) return 1;
+    if (!perform_control_transfer(hDev, 2, 2, 0)) return 1;  // Set status
+    if (!perform_control_transfer(hDev, 1, 0, 0)) return 1;  // Commit
+    return 0;
+
   } else {
     printf("usage:\n");
     printf("  set <r> <g> <b>\n");
     printf("  fade <r> <g> <b> [<speed>]\n");
-    printf("  status (on|off)\n");
+    printf("  status (on|off|blink)\n");
     printf("  blink <duty-ms> [<period-ms>]\n");
     printf("  blink off\n");
     printf("  off\n");

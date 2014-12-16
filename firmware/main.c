@@ -20,7 +20,7 @@
 typedef struct {
   // Buffered red/green/blue channel and status led values
   uint16_t red, green, blue;
-  bool status;
+  uint8_t status;  // 0 = off, 1 = on, 2 = blink
 
   // Fading parameters
   uint16_t red_target, green_target, blue_target, fade_rate;
@@ -66,20 +66,21 @@ extern usbMsgLen_t usbFunctionSetup(uchar setupData[8])
       global_state.red_target = 0;
       global_state.green_target = 0;
       global_state.blue_target = 0;
-      global_state.status = false;
+      global_state.status = 0;
       // fall-through
 
     // Make updates take effect (and stops all fading)
     case 1:
-      set_status_led(global_state.status);
+      set_status_led(global_state.status == 1);
       ws2812b_set_rgb(global_state.red, global_state.green, global_state.blue);
       global_state.red_target = global_state.red;
       global_state.green_target = global_state.green;
       global_state.blue_target = global_state.blue;
+      break;
 
     // Status LED
     case 2:
-      global_state.status = (0 != rq->wValue.word);
+      global_state.status = rq->wValue.word & 0xff;
       return 0;
 
     // Set channel values immediately (and stops all fading)
@@ -230,10 +231,12 @@ int main(void) {
       }
 
       // Status LED
-      if (now.time % 1000 == 0) {
-        set_status_led(true);
-      } else if (now.time % 1000== 10) {
-        set_status_led(false);
+      if (global_state.status == 2) {
+        if (now.time % 1000 == 0) {
+          set_status_led(true);
+        } else if (now.time % 1000== 10) {
+          set_status_led(false);
+        }
       }
     }
   }
