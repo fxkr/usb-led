@@ -24,6 +24,9 @@ typedef struct {
 
   // Fading parameters
   uint16_t red_target, green_target, blue_target, fade_rate;
+
+  // Blinking parameters
+  uint16_t blink_duty, blink_period;
 } state_t;
 
 
@@ -121,6 +124,12 @@ extern usbMsgLen_t usbFunctionSetup(uchar setupData[8])
       }
       return 0;
 
+    // Blink rate speed (16-bit-value per millisec)
+    case 10:
+      global_state.blink_duty = rq->wValue.word;
+      global_state.blink_period = rq->wIndex.word;
+      return 0;
+
     // Ignore unknown requests
     default:
       return 0;
@@ -193,15 +202,28 @@ int main(void) {
     // New millisecond?
     time_val_t now = timer_get();
     if (now.updated) {
+      bool update = false;
 
       // Fading
-      bool changed_values =
-          fade_to(&global_state.red, global_state.red_target)
-        | fade_to(&global_state.green, global_state.green_target)
-        | fade_to(&global_state.blue, global_state.blue_target);
+      update |= fade_to(&global_state.red, global_state.red_target);
+      update |= fade_to(&global_state.green, global_state.green_target);
+      update |= fade_to(&global_state.blue, global_state.blue_target);
 
-      if (changed_values) {
-        ws2812b_set_rgb(global_state.red, global_state.green, global_state.blue);
+      // Blinking
+      uint16_t r = global_state.red, g = global_state.green, b = global_state.blue;
+      if (global_state.blink_period != 0) {
+        if (now.time % global_state.blink_period == 0) {
+          update = true;
+        } else if (now.time % global_state.blink_period == global_state.blink_duty) {
+          r = 0;
+          g = 0;
+          b = 0;
+          update = true;
+        }
+      }
+
+      if (update) {
+        ws2812b_set_rgb(r, g, b);
       }
 
       // Status LED

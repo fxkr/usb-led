@@ -129,6 +129,41 @@ int main(int argc, char** argv)
     if (!perform_control_transfer(hDev, 8, b, 0)) return 1;  // Fade blue to b
     return 0;
 
+  } else if (argc == 3 && 0 == strcmp("blink", argv[1]) && 0 == strcmp("off", argv[2])) {
+
+    libusb_device_handle *hDev = open_device();
+    if (hDev == NULL) return 1;
+    if (!perform_control_transfer(hDev, 10, 0, 0)) return 1;  // Disable blinking
+    return 0;
+
+  } else if ((argc == 3 || argc == 4) && 0 == strcmp("blink", argv[1])) {
+    long duty = 0, period = 0;
+
+    duty = str_to_uint16(argv[2]);
+    if (errno != 0 || duty < 0 || duty > 65535) {
+      printf("error: values must be numbers in range 0-65535\n");
+      return 1;
+    }
+
+    if (argc == 4) {
+      period = str_to_uint16(argv[3]);
+      if (errno != 0 || period < 0 || period > 65535) {
+        printf("error: values must be numbers in range 0-65535\n");
+        return 1;
+      } else if (duty > period) {
+        printf("error: duty time must be less than or equal to period\n");
+        return 1;
+      }
+    } else {
+      period = duty;
+      duty /= 2;
+    }
+
+    libusb_device_handle *hDev = open_device();
+    if (hDev == NULL) return 1;
+    if (!perform_control_transfer(hDev, 10, duty, period)) return 1;  // Set blink params
+    return 0;
+
   } else if (argc == 3 && 0 == strcmp("status", argv[1]) && 0 == strcmp("on", argv[2])) {
     libusb_device_handle *hDev = open_device();
     if (hDev == NULL) return 1;
@@ -148,6 +183,8 @@ int main(int argc, char** argv)
     printf("  set <r> <g> <b>\n");
     printf("  fade <r> <g> <b> [<speed>]\n");
     printf("  status (on|off)\n");
+    printf("  blink <duty-ms> [<period-ms>]\n");
+    printf("  blink off\n");
     printf("  off\n");
     return 1;
   }
