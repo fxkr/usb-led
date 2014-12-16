@@ -114,6 +114,10 @@ extern usbMsgLen_t usbFunctionSetup(uchar setupData[8])
     case 9:
       if (rq->wValue.word > 0) {
         global_state.fade_rate = rq->wValue.word;
+      } else {
+        global_state.red_target = global_state.red;
+        global_state.green_target = global_state.green;
+        global_state.blue_target = global_state.blue;
       }
       return 0;
 
