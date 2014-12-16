@@ -18,8 +18,12 @@
 
 
 typedef struct {
+  // Buffered red/green/blue channel and status led values
   uint16_t red, green, blue;
   bool status;
+
+  // Fading parameters
+  uint16_t red_target, green_target, blue_target;
 } state_t;
 
 state_t global_state;
@@ -53,26 +57,54 @@ extern usbMsgLen_t usbFunctionSetup(uchar setupData[8])
       global_state.red = 0;
       global_state.green = 0;
       global_state.blue = 0;
+      global_state.red_target = 0;
+      global_state.green_target = 0;
+      global_state.blue_target = 0;
       global_state.status = false;
       // fall-through
 
-    // Make updates take effect
+    // Make updates take effect (and stops all fading)
     case 1:
       set_status_led(global_state.status);
       ws2812b_set_rgb(global_state.red, global_state.green, global_state.blue);
+      global_state.red_target = global_state.red;
+      global_state.green_target = global_state.green;
+      global_state.blue_target = global_state.blue;
 
-    // Update channel values
+    // Status LED
     case 2:
       global_state.status = (0 != rq->wValue.word);
       return 0;
+
+    // Set channel values immediately (and stops all fading)
     case 3:
       global_state.red = rq->wValue.word;
+      global_state.red_target = global_state.red;
+      global_state.green_target = global_state.green;
+      global_state.blue_target = global_state.blue;
       return 0;
     case 4:
       global_state.green = rq->wValue.word;
+      global_state.red_target = global_state.red;
+      global_state.green_target = global_state.green;
+      global_state.blue_target = global_state.blue;
       return 0;
     case 5:
       global_state.blue = rq->wValue.word;
+      global_state.red_target = global_state.red;
+      global_state.green_target = global_state.green;
+      global_state.blue_target = global_state.blue;
+      return 0;
+
+    // Fade channel values
+    case 6:
+      global_state.red_target = rq->wValue.word;
+      return 0;
+    case 7:
+      global_state.green_target = rq->wValue.word;
+      return 0;
+    case 8:
+      global_state.blue_target = rq->wValue.word;
       return 0;
 
     // Ignore unknown requests
@@ -85,6 +117,29 @@ extern usbMsgLen_t usbFunctionSetup(uchar setupData[8])
 // 16.5 MHz needed by V-USB after reset.
 extern void hadUsbReset() {
   calibrateOscillatorASM();
+}
+
+// fade_to makes channels value closer to target.
+// Returns true if *channel was changed, false otherwise.
+bool fade_to(uint16_t *channel, uint16_t target) {
+  uint16_t rate = 256;
+
+  // No fading necessary?
+  if (*channel == target) {
+    return false;
+
+  // Fade up or down?
+  } else if (*channel < target) {
+    uint16_t delta = target - *channel;
+    if (delta > rate) delta = rate;
+    *channel += delta;
+  } else {
+    uint16_t delta = *channel - target;
+    if (delta > rate) delta = rate;
+    *channel -= delta;
+  }
+
+  return true;
 }
 
 int main(void) {
@@ -122,8 +177,21 @@ int main(void) {
   while (1) {
     usbPoll();
 
+    // New millisecond?
     time_val_t now = timer_get();
     if (now.updated) {
+
+      // Fading
+      bool changed_values =
+          fade_to(&global_state.red, global_state.red_target)
+        | fade_to(&global_state.green, global_state.green_target)
+        | fade_to(&global_state.blue, global_state.blue_target);
+
+      if (changed_values) {
+        ws2812b_set_rgb(global_state.red, global_state.green, global_state.blue);
+      }
+
+      // Status LED
       if (now.time % 1000 == 0) {
         set_status_led(true);
       } else if (now.time % 1000== 10) {

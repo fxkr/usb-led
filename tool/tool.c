@@ -100,6 +100,24 @@ int main(int argc, char** argv)
     if (!perform_control_transfer(hDev, 1, 0, 0)) return 1;  // Commit
     return 0;
 
+  } else if (argc == 5 && 0 == strcmp("fade", argv[1])) {
+
+    int e = 0;
+    uint16_t r = str_to_uint16(argv[2]); e |= errno;
+    uint16_t g = str_to_uint16(argv[3]); e |= errno;
+    uint16_t b = str_to_uint16(argv[4]); e |= errno;
+    if (e != 0) {
+      printf("error: values must be numbers in range 0-65535\n");
+      return 1;
+    }
+
+    libusb_device_handle *hDev = open_device();
+    if (hDev == NULL) return 1;
+    if (!perform_control_transfer(hDev, 6, r, 0)) return 1;  // Fade red to r
+    if (!perform_control_transfer(hDev, 7, g, 0)) return 1;  // Fade green to g
+    if (!perform_control_transfer(hDev, 8, b, 0)) return 1;  // Fade blue to b
+    return 0;
+
   } else if (argc == 3 && 0 == strcmp("status", argv[1]) && 0 == strcmp("on", argv[2])) {
     libusb_device_handle *hDev = open_device();
     if (hDev == NULL) return 1;
@@ -117,6 +135,7 @@ int main(int argc, char** argv)
   } else {
     printf("usage:\n");
     printf("  set <r> <g> <b>\n");
+    printf("  fade <r> <g> <b>\n");
     printf("  status (on|off)\n");
     printf("  off\n");
     return 1;
