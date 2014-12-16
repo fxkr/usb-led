@@ -128,6 +128,9 @@ extern usbMsgLen_t usbFunctionSetup(uchar setupData[8])
     case 10:
       global_state.blink_duty = rq->wValue.word;
       global_state.blink_period = rq->wIndex.word;
+      if (global_state.blink_period == 0) {
+        ws2812b_set_rgb(global_state.red, global_state.green, global_state.blue);
+      }
       return 0;
 
     // Ignore unknown requests
