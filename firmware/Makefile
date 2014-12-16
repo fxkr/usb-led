@@ -14,7 +14,7 @@ OBJCOPY        = avr-objcopy
 OBJDUMP        = avr-objdump
 
 
-.PHONY: all flash clean read-fuses write-fuses libusb
+.PHONY: all flash clean read-fuses write-fuses libusb show-size show-bss
 
 
 all: libusb $(PRG).hex
@@ -24,7 +24,7 @@ clean:
 	rm -f *.lst *.map $(EXTRA_CLEAN_FILES)
 	rm -f usbdrv/*.o usbdrv/oddebug.s usbdrv/usbdrv.s
 
-flash:
+flash: $(PRG).hex
 	avrdude -p attiny85 -c usbasp -e -U flash:w:$(PRG).hex
 
 read-fuses:
@@ -32,6 +32,12 @@ read-fuses:
 
 write-fuses:
 	avrdude -c usbasp -p attiny85 -U lfuse:w:0xf1:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m
+
+show-size:
+	avr-size --mcu=$(MCU_TARGET) --format=avr $(PRG).elf
+
+show-bss:
+	avr-objdump -t $(PRG).elf | grep "\.bss"
 
 
 .c.o:
@@ -42,7 +48,7 @@ write-fuses:
 
 %.hex: %.elf
 	$(OBJCOPY) -j .text -j .data -O ihex $< $@
-	avr-size $@
+	avr-size --mcu=$(MCU_TARGET) --format=avr $<
 
 %.srec: %.elf
 	$(OBJCOPY) -j .text -j .data -O srec $< $@
