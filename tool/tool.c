@@ -10,13 +10,16 @@
 #define PID 0x49D9
 
 
-uint8_t str_to_uint8(char *str) {
+uint16_t str_to_uint16(char *str) {
   errno = 0;
   char *endptr;
   long val = strtol(str, &endptr, 0);
   if (errno != 0) {
     return 0;
   } else if (*endptr != '\0') {
+    errno = EINVAL;
+    return 0;
+  } else if (val < 0 || val > 65535) {
     errno = EINVAL;
     return 0;
   }
@@ -80,12 +83,12 @@ int main(int argc, char** argv)
 
   } else if (argc == 5 && 0 == strcmp("set", argv[1])) {
 
-    int e;
-    long r = str_to_uint8(argv[2]); e |= errno;
-    long g = str_to_uint8(argv[3]); e |= errno;
-    long b = str_to_uint8(argv[4]); e |= errno;
-    if (errno != 0 || r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
-      printf("error: values must be numbers in range 0-255\n");
+    int e = 0;
+    uint16_t r = str_to_uint16(argv[2]); e |= errno;
+    uint16_t g = str_to_uint16(argv[3]); e |= errno;
+    uint16_t b = str_to_uint16(argv[4]); e |= errno;
+    if (e != 0) {
+      printf("error: values must be numbers in range 0-65535\n");
       return 1;
     }
 

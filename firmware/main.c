@@ -18,7 +18,7 @@
 
 
 typedef struct {
-  uint8_t red, green, blue;
+  uint16_t red, green, blue;
   bool status;
 } state_t;
 
@@ -66,13 +66,13 @@ extern usbMsgLen_t usbFunctionSetup(uchar setupData[8])
       global_state.status = (0 != rq->wValue.word);
       return 0;
     case 3:
-      global_state.red = rq->wValue.word & 0xff;
+      global_state.red = rq->wValue.word;
       return 0;
     case 4:
-      global_state.green = rq->wValue.word & 0xff;
+      global_state.green = rq->wValue.word;
       return 0;
     case 5:
-      global_state.blue = rq->wValue.word & 0xff;
+      global_state.blue = rq->wValue.word;
       return 0;
 
     // Ignore unknown requests
