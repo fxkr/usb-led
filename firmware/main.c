@@ -23,10 +23,13 @@ typedef struct {
   bool status;
 
   // Fading parameters
-  uint16_t red_target, green_target, blue_target;
+  uint16_t red_target, green_target, blue_target, fade_rate;
 } state_t;
 
-state_t global_state;
+
+state_t global_state = {
+  .fade_rate = 256,
+};
 
 
 /* Turn the green status LED on/off. */
@@ -107,6 +110,13 @@ extern usbMsgLen_t usbFunctionSetup(uchar setupData[8])
       global_state.blue_target = rq->wValue.word;
       return 0;
 
+    // Fade speed (16-bit-value per millisec)
+    case 9:
+      if (rq->wValue.word > 0) {
+        global_state.fade_rate = rq->wValue.word;
+      }
+      return 0;
+
     // Ignore unknown requests
     default:
       return 0;
@@ -122,7 +132,6 @@ extern void hadUsbReset() {
 // fade_to makes channels value closer to target.
 // Returns true if *channel was changed, false otherwise.
 bool fade_to(uint16_t *channel, uint16_t target) {
-  uint16_t rate = 256;
 
   // No fading necessary?
   if (*channel == target) {
@@ -131,11 +140,11 @@ bool fade_to(uint16_t *channel, uint16_t target) {
   // Fade up or down?
   } else if (*channel < target) {
     uint16_t delta = target - *channel;
-    if (delta > rate) delta = rate;
+    if (delta > global_state.fade_rate) delta = global_state.fade_rate;
     *channel += delta;
   } else {
     uint16_t delta = *channel - target;
-    if (delta > rate) delta = rate;
+    if (delta > global_state.fade_rate) delta = global_state.fade_rate;
     *channel -= delta;
   }
 
