@@ -26,8 +26,6 @@ This project is based on:
   https://github.com/micronucleus/micronucleus/blob/master/firmware/osccalASM.S
 - libusb (LGPLv2.1 or later)
   http://libusb.info/
-- docopt.c (MIT)
-  https://github.com/docopt/docopt.c
 - SparkFuns Eagle Libraries (CC BY-SA 3.0)
   https://github.com/sparkfun/SparkFun-Eagle-Libraries
 
