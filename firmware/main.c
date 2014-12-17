@@ -76,7 +76,7 @@ extern usbMsgLen_t usbFunctionSetup(uchar setupData[8])
       global_state.red_target = global_state.red;
       global_state.green_target = global_state.green;
       global_state.blue_target = global_state.blue;
-      break;
+      return 0;
 
     // Status LED
     case 2:
