@@ -104,7 +104,7 @@ static inline void ws2812b_send_byte(uint8_t byte, uint8_t hiMask, uint8_t loMas
   uint8_t bitNum;
 
   #if F_CPU!=16500000
-  #error('requires 16.5 MHz clock period')
+  #error('requires 16.5 MHz clock frequency')
   #endif
 
   __asm volatile(
