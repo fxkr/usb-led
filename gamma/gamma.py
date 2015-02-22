@@ -15,7 +15,7 @@ import math
 import sys
 
 
-# Gamam exponent. 2.5 is a good choice.
+# Gamma exponent. 2.5 is a good choice.
 GAMMA = 2.5
 
 # Number of input values. Should be a power of two.
