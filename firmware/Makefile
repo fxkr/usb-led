@@ -25,13 +25,13 @@ clean:
 	rm -f usbdrv/*.o usbdrv/oddebug.s usbdrv/usbdrv.s
 
 flash: $(PRG).hex
-	avrdude -p attiny85 -c usbasp -e -U flash:w:$(PRG).hex
+	avrdude -p attiny85 -B 8 -c usbasp -e -U flash:w:$(PRG).hex
 
 read-fuses:
-	avrdude -c usbasp -p attiny85 -U hfuse:r:/dev/null:h -U lfuse:r:/dev/null:h
+	avrdude -c usbasp -p attiny85 -B 8 -U hfuse:r:/dev/null:h -U lfuse:r:/dev/null:h
 
 write-fuses:
-	avrdude -c usbasp -p attiny85 -U lfuse:w:0xf1:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m
+	avrdude -c usbasp -p attiny85 -B 8 -U lfuse:w:0xf1:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m
 
 show-size:
 	avr-size --mcu=$(MCU_TARGET) --format=avr $(PRG).elf
