@@ -113,7 +113,7 @@ static inline void ws2812b_send_byte(uint8_t byte, uint8_t hiMask, uint8_t loMas
     "       out  %[port],%[hi] \n\t"  //   Rising Flank
     "       rjmp .+0           \n\t"
     "       rjmp .+0           \n\t"
-    "       sbrs %[byte],7     \n\t"  //   If MSB Set (else nop)
+    "       sbrs %[byte],7     \n\t"  //   Skip following instruction if MSB is set:
     "       out  %[port],%[lo] \n\t"  //     Early Falling Flank (means "0")
     "       lsl  %[byte]       \n\t"  //   Upshift (promote next bit to MSB)
     "       nop                \n\t"
